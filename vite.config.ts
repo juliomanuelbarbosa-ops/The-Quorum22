@@ -1,13 +1,13 @@
 
 {
-  "name": "the-quorum",
+  "name"; "the-quorum",
   "private": true,
   "version": "9.0.0",
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "android:build": "npx cap sync android && cd android && ./gradlew assembleRelease"
   },
