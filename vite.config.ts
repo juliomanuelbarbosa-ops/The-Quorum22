@@ -1,56 +1,6 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-{
-  "name"; "the-quorum",
-  "private": true,
-  "version": "9.0.0",
-  "type": "module",
-  "main": "electron/main.js",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "android:build": "npx cap sync android && cd android && ./gradlew assembleRelease"
-  },
-  "dependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/cli": "^6.1.2",
-    "@capacitor/core": "^6.1.2",
-    "@ledgerhq/hw-app-eth": "^6.12.0",
-    "@ledgerhq/hw-app-solana": "^7.0.0",
-    "@ledgerhq/hw-transport-webhid": "^6.29.0",
-    "@monaco-editor/react": "^4.6.0",
-    "@react-three/drei": "^9.115.0",
-    "@react-three/fiber": "^8.17.9",
-    "@react-three/postprocessing": "^2.16.2",
-    "@solana/web3.js": "^1.95.4",
-    "@supabase/supabase-js": "^2.45.4",
-    "@trezor/connect-web": "^9.4.2",
-    "bip39": "^3.1.0",
-    "chart.js": "^4.4.1",
-    "clsx": "^2.1.1",
-    "ethers": "^6.13.4",
-    "framer-motion": "^11.11.1",
-    "lucide-react": "^0.441.0",
-    "qrcode": "^1.5.4",
-    "react": "^18.3.1",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.2",
-    "three": "^0.169.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "autoprefixer": "^10.4.20",
-    "concurrently": "^9.0.1",
-    "electron": "^32.0.0",
-    "electron-builder": "^25.1.8",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5.5.3",
-    "vite": "^5.4.1",
-    "vite-plugin-pwa": "^0.20.5",
-    "wait-on": "^8.0.1"
-  }
-}
+export default defineConfig({
+  plugins: [react()],
+})
