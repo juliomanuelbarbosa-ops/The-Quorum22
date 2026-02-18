@@ -4,12 +4,12 @@
   "version": "9.0.0",
   "type": "module",
   "main": "electron/main.js",
-  "scripts": {
-    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "build": "vite build && electron-builder",
-    "preview": "vite preview",
-    "android:build": "npx cap sync android && cd android && ./gradlew assembleRelease"
-  },
+ "scripts": {
+  "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+  "build": "vite build && electron-builder",
+  "preview": "vite preview",
+  "android:build": "npx cap sync android && cd android && ./gradlew assembleRelease"
+}
   "dependencies": {
     "@capacitor/android": "^6.1.2",
     "@capacitor/cli": "^6.1.2",
