@@ -1,64 +1,50 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+// import { VitePWA } from 'vite-plugin-pwa'   // ← COMMENTED OUT to isolate white screen issue
 
 export default defineConfig({
-  // Critical for Vercel root deployment
+  // Explicit root base — Vercel requires this for correct asset paths
   base: '/',
 
   plugins: [
     react(),
 
-    VitePWA({
-      // Only enable PWA in production builds
-      devOptions: {
-        enabled: false,           // Prevents SW interference in local dev
-      },
-
-      registerType: 'autoUpdate',
-
-      // Aggressive cache cleanup + immediate takeover
-      workbox: {
-        cleanupOutdatedCaches: true,
-        skipWaiting: true,
-        clientsClaim: true,
-        globPatterns: ['**/*.{js,css,html,png,ico,svg,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: { cacheName: 'google-fonts', expiration: { maxEntries: 10 } }
-          }
-        ]
-      },
-
-      manifest: {
-        name: 'THE QUORUM v9.0',
-        short_name: 'Quorum',
-        description: 'Cyberpunk Sovereign Command OS',
-        theme_color: '#00f3ff',
-        background_color: '#0a0a0a',
-        display: 'standalone',
-        start_url: '/',
-        icons: [
-          { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' }
-        ]
-      }
-    })
+    // Temporarily disabled to test if PWA/service worker is causing white screen
+    // Re-enable later after confirming the app loads
+    // VitePWA({
+    //   registerType: 'autoUpdate',
+    //   devOptions: { enabled: false },
+    //   workbox: {
+    //     cleanupOutdatedCaches: true,
+    //     skipWaiting: true,
+    //     clientsClaim: true,
+    //     globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+    //   },
+    //   manifest: {
+    //     name: 'THE QUORUM v9.0',
+    //     short_name: 'Quorum',
+    //     description: 'Cyberpunk Sovereign Command OS',
+    //     theme_color: '#00f3ff',
+    //     background_color: '#0a0a0a',
+    //     display: 'standalone',
+    //     icons: [
+    //       { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+    //       { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' }
+    //     ]
+    //   }
+    // })
   ],
 
-  // Production optimizations
+  // Production optimizations (helps avoid empty chunk issues)
   build: {
-    chunkSizeWarningLimit: 3000,        // Increase for three.js + large deps
-    sourcemap: false,                   // Disable sourcemaps in prod (reduces size & loading issues)
+    chunkSizeWarningLimit: 3000,
+    sourcemap: false,                    // Disable sourcemaps in prod (reduces size & loading issues)
     minify: 'terser',
     terserOptions: {
-      compress: { drop_console: true }  // Remove console.log in prod
+      compress: { drop_console: true }   // Remove console.log in production
     },
     rollupOptions: {
       output: {
-        // Manual chunk splitting to avoid empty chunks
         manualChunks: {
           three: ['three', '@react-three/fiber', '@react-three/drei'],
           vendor: ['react', 'react-dom', 'framer-motion'],
@@ -68,7 +54,7 @@ export default defineConfig({
     }
   },
 
-  // Help Vite resolve heavy deps faster
+  // Faster dep resolution for heavy libraries
   optimizeDeps: {
     include: ['three', 'react', 'react-dom', 'framer-motion']
   }
