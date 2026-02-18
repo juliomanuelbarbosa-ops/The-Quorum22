@@ -3,90 +3,62 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/',  // Explicitly root — Vercel likes this (safe even if you remove it)
+
   plugins: [
     react(),
+
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: false  // Prevents service worker in dev (common white-screen cause)
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'THE QUORUM v9.0',
         short_name: 'Quorum',
-        description: 'Cyberpunk Sovereign OS — Offline, Hardware-Secured, VR-Native, Decentralized',
+        description: 'Cyberpunk Sovereign Command OS',
         theme_color: '#00f3ff',
         background_color: '#0a0a0a',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
         icons: [
           {
-            src: '/icon-192.png',
+            src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any maskable'
+            type: 'image/png'
           },
           {
-            src: '/icon-512.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ],
-        screenshots: [
-          {
-            src: '/screenshot-desktop.png',
-            sizes: '1280x800',
-            type: 'image/png',
-            form_factor: 'wide'
-          },
-          {
-            src: '/screenshot-mobile.png',
-            sizes: '750x1334',
-            type: 'image/png',
-            form_factor: 'narrow'
+            type: 'image/png'
           }
         ]
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/api\.(coingecko|nasagov|open-notify|cve\.circl|thesportsdb)\.com/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 // 1 day
-              }
-            }
-          }
-        ]
-      },
-      devOptions: {
-        enabled: true
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true
       }
     })
   ],
-  server: {
-    port: 5173,
-    open: true,
-    hmr: true
-  },
+
+  // Optional: Helps with large deps like three.js
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: true,
+    chunkSizeWarningLimit: 2000, // Increase if you get warnings
+    sourcemap: false,           // Disable in prod to reduce size (optional)
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          charts: ['chart.js', 'react-chartjs-2']
+          three: ['three'],
+          vendor: ['react', 'react-dom', 'framer-motion']
         }
       }
     }
   },
+
+  // Prevent empty chunks issue
   optimizeDeps: {
-    include: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/xr']
+    include: ['three', 'react', 'react-dom']
   }
 })
