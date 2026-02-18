@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "android:build": "npx cap sync android && cd android && ./gradlew assembleRelease"
-  },
+  }
   "dependencies": {
     "@capacitor/android": "^6.1.2",
     "@capacitor/cli": "^6.1.2",
@@ -36,7 +36,7 @@
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.2",
     "three": "^0.169.0"
-  },
+  }
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
